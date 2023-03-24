@@ -6,6 +6,8 @@
 
 # usage
 
+如果要走代理需要设置环境变量 HTTPS_PROXY
+
 ```
 usage: xhll [...opts] [n MB]
   -j int
