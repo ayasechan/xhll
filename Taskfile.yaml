@@ -18,6 +18,8 @@ tasks:
         GOOS=windows go build -o dist .
         GOOS=linux go build -o dist .
 
+  run-cf:
+    - ./dist/xhll -u https://speed.cloudflare.com/__down?bytes=104857600 102400
 
   run-cn:
-    - ./dist/llxh -j 64 -u https://ossweb-img.qq.com/upload/adw/image/752/20211219/f4b5919ec683f49d8532cef90644b9ac.jpeg 10240
+    - ./dist/xhll -j 64 -u https://ossweb-img.qq.com/upload/adw/image/752/20211219/f4b5919ec683f49d8532cef90644b9ac.jpeg 10240
