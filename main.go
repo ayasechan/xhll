@@ -63,7 +63,6 @@ func main() {
 			fmt.Printf("elpased: %s rxtx: %.2fm ↑: %.2fm/s ↓: %.2fm/s", eplasedTime, B2M(float64(rxtx)), txSpeed, rxSpeed)
 
 			if rxtx > c {
-				cancel()
 				// calc avg speed
 				txSpeedCalcer = newSpeedCalcer(startTime, 0)
 				rxSpeedCalcer = newSpeedCalcer(startTime, 0)
@@ -74,6 +73,7 @@ func main() {
 				fmt.Printf("elpased: %s rxtx: %.2fm ↑: %.2fm/s ↓: %.2fm/s", eplasedTime, B2M(float64(rxtx)), txSpeed, rxSpeed)
 				println("")
 				println("done!")
+				cancel()
 				return
 			}
 
