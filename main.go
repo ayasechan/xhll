@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -120,6 +121,13 @@ func main() {
 
 }
 
+var bufPool = sync.Pool{
+	New: func() any {
+		buf := make([]byte, 1024)
+		return &buf
+	},
+}
+
 func download(ctx context.Context, url string) error {
 	tr := http.DefaultTransport.(*http.Transport).Clone()
 	client := http.Client{Transport: tr}
@@ -137,7 +145,8 @@ func download(ctx context.Context, url string) error {
 	type writer interface {
 		Write(w io.Writer) error
 	}
-	buf := make([]byte, 1024)
+	buf := bufPool.Get().(*[]byte)
+	defer bufPool.Put(buf)
 	count := func(addr *uint64, w writer) {
 		pipr, pipw := io.Pipe()
 		go func() {
@@ -145,7 +154,7 @@ func download(ctx context.Context, url string) error {
 			pipw.Close()
 		}()
 		for {
-			n, err := pipr.Read(buf)
+			n, err := pipr.Read(*buf)
 			if err != nil {
 				pipr.Close()
 				return
